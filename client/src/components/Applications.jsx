@@ -1,11 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Navbar from './Navbar'
 import moment from 'moment'
 import Footer from './Footer'
 import { AppContext } from '../context/AppContext'
+import { getAppliedJobs } from '../api/api'
 
 const Applications = () => {
-    const {appliedJobData} = useContext(AppContext);
+    const {appliedJobData,setAppliedJobData} = useContext(AppContext);
+
+    const getAppliedJobsData = async ()=>{
+        try {
+            const appliedJobRes = await getAppliedJobs();
+            setAppliedJobData(appliedJobRes?.data?.appliedJobs || [])  
+        } catch (error) {
+            setAppliedJobData([])
+        }
+    }
+
+    useEffect(()=>{
+        getAppliedJobsData()
+    },[])
 
   return (
     <>
