@@ -7,7 +7,7 @@ import { logout } from '../api/api.js'
 
 const Navbar = () => {
   const navigate = useNavigate()
-  const {user,setUser,setUserLogin} = useContext(AppContext); 
+  const {user,setUser,setUserLogin,setAppliedJobData} = useContext(AppContext); 
   const [showProfile,setShowProfile] = useState(false); 
 
   // handle logout
@@ -15,6 +15,7 @@ const Navbar = () => {
     try {
       const logoutRes = await logout();
       localStorage.removeItem('token')
+      setAppliedJobData([])
       setUser("");
       return toast.success(logoutRes?.data?.message);
     } catch (error) {
