@@ -1,24 +1,30 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import moment from 'moment'
 import Footer from './Footer'
 import { AppContext } from '../context/AppContext'
 import { getAppliedJobs } from '../api/api'
+import Loading from './Loading'
 
 const Applications = () => {
     const {user,appliedJobData,setAppliedJobData} = useContext(AppContext);
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
+    const [loader,setLoader] = useState(true);
 
     const getAppliedJobsData = async ()=>{
+        setLoader(true)
         try {
             const appliedJobRes = await getAppliedJobs();
-            setAppliedJobData(appliedJobRes?.data?.appliedJobs || [])  
+            setAppliedJobData(appliedJobRes?.data?.appliedJobs || [])
+            setLoader(false)  
         } catch (error) {
             setAppliedJobData([])
+            setLoader(false)  
         }
     }
 
     useEffect(()=>{
+        setLoader(false)
         if(user && token){
           getAppliedJobsData()
         }
@@ -27,6 +33,7 @@ const Applications = () => {
   return (
     <>
       <Navbar />
+      {loader ? <Loading /> : 
       <div className='container px-4 min-h-[65vh] 2xl:px-20 mx-auto my-10'>
         <h2 className='text-xl font-semibold mb-4'>Jobs Applied</h2>
         {appliedJobData.length > 0 ? (
@@ -67,7 +74,7 @@ const Applications = () => {
                 <p className='text-center'>No jobs applied</p>
             </>
         )}
-      </div>
+      </div> }
       <Footer />
     </>
   )
