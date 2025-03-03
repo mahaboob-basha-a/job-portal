@@ -6,7 +6,8 @@ import { AppContext } from '../context/AppContext'
 import { getAppliedJobs } from '../api/api'
 
 const Applications = () => {
-    const {appliedJobData,setAppliedJobData} = useContext(AppContext);
+    const {user,appliedJobData,setAppliedJobData} = useContext(AppContext);
+    const token = localStorage.getItem('token')
 
     const getAppliedJobsData = async ()=>{
         try {
@@ -18,7 +19,9 @@ const Applications = () => {
     }
 
     useEffect(()=>{
-        getAppliedJobsData()
+        if(user && token){
+          getAppliedJobsData()
+        }
     },[])
 
   return (
