@@ -17,9 +17,9 @@ const Login = () => {
             try {
                 if(email && password.length > 5){
                     const loginRes = await login({email,password});
+                    const userInfo = await getProfile()
                     toast.success(loginRes.data.message);
                     localStorage.setItem('token',loginRes.data.token);
-                    const userInfo = await getProfile()
                     setUser(userInfo?.data?.name || "")
                     setUserLogin(false)
                     setName("");

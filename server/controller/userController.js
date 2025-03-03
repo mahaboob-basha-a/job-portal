@@ -25,7 +25,7 @@ const userLogin = async (req,res)=>{
             }
         const jwtToken = jwt.sign(payload,process.env.JWTSECRETKEY,{expiresIn:60*60*24*7});
 
-        return res.cookie('token',jwtToken,{httpOnly: true,secure: process.env.NODE_ENV === 'production',sameSite:'strict' }).status(200).json({message:'User login success',token: jwtToken})
+        return res.cookie('token',jwtToken,{httpOnly: true,secure: process.env.NODE_ENV === 'production',sameSite:'none' }).status(200).json({message:'User login success',token: jwtToken})
     
         
     } catch (error) {
